@@ -1,0 +1,21 @@
+5. Skills + context fork + allowed-tools 
+Simple way to think about it: a skill is like a slash command's smarter sibling — but instead of just running one saved prompt, it can spin up a separate mini-Claude to do the work.
+
+Slash command = "here's a script, read it and follow it in this same conversation."
+Skill = "hand this whole task off to a fresh helper, let it work on its own, and just bring back the results."
+
+That's what context: fork means in deep-review/SKILL.md — when you trigger it, Claude Code opens a separate session (a sub-agent) to go read through all your files and do the audit. That sub-agent's work — all the file-reading, back-and-forth — happens in its own context window, not yours. Your main chat only receives the final summary it reports back.
+
+Why that matters: if it worked like a slash command instead, all that file-reading would pile up in your main conversation and eat your context window fast. Forking keeps your main session clean.
+
+allowed-tools: ["Read", "Grep", "Glob"] is just a leash on that sub-agent — it's allowed to look at files (read/search) but not Edit or Write them, so it can only report problems, not touch your code.
+
+
+WORKFLOW FOR BUILDING WITH CLAUDE CODE
+CLAUDE.md — set this up first (or as soon as the project's basic shape exists), since it needs something to describe.
+Rules — add these for path-specific conventions (styling, testing, etc.) that should apply automatically.
+Start building — do the actual work.
+Commands — once you notice yourself typing the same multi-step prompt repeatedly (like "review my changes for X, Y, Z"), save it as a slash command.
+Skills — reach for these when a task is big/multi-step enough that it deserves its own sub-agent (auditing many files, a workflow with several stages) — not for simple one-shot prompts.
+
+One nuance: in practice it's rarely fully linear — you'll often write CLAUDE.md with a rough first draft, start coding, then loop back to add a rule or command the moment you notice a repeated pattern. So think of it less as a strict 5-step waterfall and more as: CLAUDE.md + rules as your baseline setup, then commands/skills get added opportunistically as you actually feel the need for them.
